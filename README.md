@@ -8,15 +8,11 @@ This project demonstrates how to implement **Linear Regression** using **Gradien
 ##  Algorithm Overview
 The goal is to determine the best parameters (`w`, `b`) that minimize the error between the actual values `y` and the predicted values `ŷ` using the equation:
 
-\[
-\hat{y} = w \cdot x + b
-\]
+ŷ = w * x + b
 
 The error is measured using the **Mean Squared Error (MSE)** loss function:
 
-\[
-\text{Loss} = \frac{1}{N} \sum (y - \hat{y})^2
-\]
+Loss = (1/N) * Σ (y - ŷ)²
 
 Where:
 - `ŷ` is the predicted value.
@@ -24,26 +20,17 @@ Where:
 
 ---
 
-##  Gradient Descent Formula
+## Gradient Descent Formula
 To minimize the loss, we update `w` and `b` using **partial derivatives**:
 
-\[
-\frac{\partial \text{Loss}}{\partial w} = -\frac{2}{N} \sum x (y - (w \cdot x + b))
-\]
+∂Loss/∂w = (-2/N) * Σ x * (y - (w * x + b))
+∂Loss/∂b = (-2/N) * Σ (y - (w * x + b))
 
-\[
-\frac{\partial \text{Loss}}{\partial b} = -\frac{2}{N} \sum (y - (w \cdot x + b))
-\]
 
 The parameters are updated as follows:
 
-\[
-w = w - \alpha \cdot \frac{\partial \text{Loss}}{\partial w}
-\]
-
-\[
-b = b - \alpha \cdot \frac{\partial \text{Loss}}{\partial b}
-\]
+w = w - α * ∂Loss/∂w
+b = b - α * ∂Loss/∂b
 
 Where `α` (alpha) is the **learning rate**.
 
@@ -54,35 +41,52 @@ Where `α` (alpha) is the **learning rate**.
 This algorithm is implemented in Python using NumPy:
 
 ```python
+# Gradient descent for liner regression
+# !pip install numpy
 import numpy as np
 
-# Generate random dataset
-x = np.random.randn(10, 1)
+# Initialise some parameters
+
+#data sets is rondom
+x = np.random.randn(10,1)
+# y = wx = b
 y = 2 * x + np.random.randn()
 
-# Initialize parameters
-w, b = 0.0, 0.0
+
+# parmeters
+
+w = 0.0
+b = 0.0
+
+
+# hyperparmeters
+
 learning_rate = 0.01
 
-# Gradient Descent function
-def descent(x, y, w, b, learning_rate):
-    dldw, dldb = 0.0, 0.0
-    N = x.shape[0]
 
-    for xi, yi in zip(x, y):
-        dldw += -2 * xi * (yi - (w * xi + b))
-        dldb += -2 * (yi - (w * xi + b))
+# creat gradient descent function
+def descent( x , y , w , b , learning_rate ):  
+   dldw =0.0
+   dldb =0.0
+   N = x.shape [0]
+    # loss = (y-(wx+b))**2 
+   for xi , yi in zip(x,y):
+      dldw += - 2*xi*(yi-(w*xi+b))
+      dldb += - 2*(yi-(w*xi+b))
+      
+   # update w parameter
+   w = w - learning_rate*(1/N)*dldw
+   b = b - learning_rate*(1/N)*dldb
+   return w , b 
 
-    w -= learning_rate * (1/N) * dldw
-    b -= learning_rate * (1/N) * dldb
-    return w, b
+# Iteratively make updates
 
-# Training loop
-for epoch in range(1000):
-    w, b = descent(x, y, w, b, learning_rate)
-    yhat = w * x + b
-    loss = np.sum((y - yhat) ** 2) / x.shape[0]
-    print(f'Epoch {epoch}: Loss = {loss}, w = {w}, b = {b}')
+for epoch in range (1050):
+   w,b = descent(x, y,w,b,learning_rate)
+   yhat = w*x + b
+   loss = np.sum((y - yhat) ** 2) / x.shape[0] 
+   print(f'{epoch}loss is {loss},pramters waight:{w} ,bais:{b}')
+ 
 ``````
 # Notes
 You can change learning_rate and epochs to experiment with the results.
