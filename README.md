@@ -42,43 +42,46 @@ Where `α` (alpha) is the learning rate.
 This algorithm is implemented in Python using NumPy:
 
 ```python
-# Gradient Descent for Linear Regression
-# Install numpy if not installed
-
+# Gradient descent for linear regression
+# !pip install numpy
 import numpy as np
 
-# Initialize parameters
+# Initialize some parameters
+
+# Dataset is random
+x = np.random.randn(10,1)
+# y = wx + b
+y = 2 * x + np.random.randn()
+
+# Parameters
 w = 0.0
 b = 0.0
 
 # Hyperparameters
 learning_rate = 0.01
 
-# Gradient Descent function
-def descent(x, y, w, b, learning_rate):
-    dldw = 0.0
-    dldb = 0.0
-    N = x.shape[0]
+# Create gradient descent function
+def descent(x, y, w, b, learning_rate):  
+   dldw = 0.0
+   dldb = 0.0
+   N = x.shape[0]
+   # loss = (y - (wx + b))**2 
+   for xi, yi in zip(x, y):
+      dldw += -2 * xi * (yi - (w * xi + b))
+      dldb += -2 * (yi - (w * xi + b))
+      
+   # Update w parameter
+   w = w - learning_rate * (1 / N) * dldw
+   b = b - learning_rate * (1 / N) * dldb
+   return w, b 
 
-    for xi, yi in zip(x, y):
-        dldw += -2 * xi * (yi - (w * xi + b))
-        dldb += -2 * (yi - (w * xi + b))
-
-    # Update parameters
-    w -= learning_rate * (dldw / N)
-    b -= learning_rate * (dldb / N)
-
-    return w, b
-
-# Iteratively update weights
+# Iteratively make updates
 for epoch in range(1050):
-    w, b = descent(x, y, w, b, learning_rate)
-    yhat = w * x + b
-    loss = np.mean((y - yhat) ** 2)
-    
-    print(f"Epoch {epoch}: Loss = {loss}, Weight = {w}, Bias = {b}")
+   w, b = descent(x, y, w, b, learning_rate)
+   yhat = w * x + b
+   loss = np.sum((y - yhat) ** 2) / x.shape[0] 
+   print(f'{epoch} loss is {loss}, parameters weight: {w}, bias: {b}')
 
- 
 ``````
 # Notes
 You can change learning_rate and epochs to experiment with the results.
