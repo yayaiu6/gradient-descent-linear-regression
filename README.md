@@ -21,18 +21,19 @@ Where:
 ---
 
 ## Gradient Descent Formula
-To minimize the loss, we update `w` and `b` using **partial derivatives**:
 
-∂Loss/∂w = (-2/N) * Σ x * (y - (w * x + b))
-∂Loss/∂b = (-2/N) * Σ (y - (w * x + b))
+To minimize the loss, we update `w` and `b` using partial derivatives:
 
+∂Loss/∂w = (-2/N) * Σ x * (y - (w * x + b))  
+∂Loss/∂b = (-2/N) * Σ (y - (w * x + b))  
 
 The parameters are updated as follows:
 
-w = w - α * ∂Loss/∂w
-b = b - α * ∂Loss/∂b
+w = w - α * (∂Loss/∂w)  
+b = b - α * (∂Loss/∂b)  
 
-Where `α` (alpha) is the **learning rate**.
+Where `α` (alpha) is the learning rate.
+
 
 ---
 
